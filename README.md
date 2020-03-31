@@ -7,5 +7,5 @@ An updater for Arch Linux that makes your life easier
 
 **Feature list**
 - [x] Displays the latest news from Arch Linux news
-- [] Only displays articles created since last update
-- [] yay AUR helper detection
+- [ ] Only displays articles created since last update
+- [ ] yay AUR helper detection
