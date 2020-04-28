@@ -1,4 +1,8 @@
 import feedparser
+import os
+from os import path
+
+fileName = "/home/" + os.environ.get("USER") + "/.archUpdate"
 
 def getArticles():
     articleTitles = []
@@ -10,7 +14,6 @@ def getArticles():
     feedEntries = newsFeed.entries
 
     for entry in feedEntries:
-        print(entry.keys())
         articleTitles.append(entry.title)
         articleDates.append(entry.published)
         articleLinks.append(entry.link)
@@ -21,10 +24,34 @@ def getArticles():
 def getLink(link):
     return f"\u001b]8;;{link}\u001b\\Click to see more\u001b]8;;\u001b\\"
 
-# TODO: store last seen article and only show articles since then
 def printArticles(articleTitles, articleDates, articleLinks, articleSummaries):
-    for i in range(len(articleTitles)):
-        print("\n Article #" + str(i) + ":")
+    lastTitle = lastReadArticle()
+
+    for i in range(0, 5):
+        if articleTitles[i] == lastTitle:
+            if i == 0:
+                print("No new articles since last time used")
+
+            # write first article to the file as it's the latest one
+            writeLastArticle(articleTitles[0])
+            break
+
+        print("\n Article #" + str(i+1) + ":")
         print(articleTitles[i] + ": " + articleDates[i])
         print(articleSummaries[i])
         print(getLink(articleLinks[i]))
+
+        if i == 4:
+            writeLastArticle(articleTitles[0])
+
+def lastReadArticle():
+    if path.exists(fileName):
+        with open(fileName, "r") as file:
+            return file.readline()
+
+def writeLastArticle(title):
+    if not path.exists(fileName):
+        open(fileName, "x")
+
+    with open(fileName, "w") as file:
+        file.writelines([title])
