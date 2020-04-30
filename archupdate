@@ -1,0 +1,11 @@
+#!/bin/bash
+
+OUTPUT="$(python3 archUpdate.py)"
+echo "$OUTPUT"
+
+read -p $'\nDo you wish to update? [y/n] ' yn
+case $yn in
+	[Yy]* ) yay;;
+	[Nn]* ) exit;;
+	* ) echo "Please answer y(Y) or n(N)";;
+esac

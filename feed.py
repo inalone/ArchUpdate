@@ -1,13 +1,13 @@
 import feedparser
 import os
 from os import path
+import re
 
 fileName = "/home/" + os.environ.get("USER") + "/.archUpdate"
 
 def getArticles():
     articleTitles = []
     articleDates = []
-    articleLinks = []
     articleSummaries = []
 
     newsFeed = feedparser.parse("https://www.archlinux.org/feeds/news/")
@@ -16,15 +16,23 @@ def getArticles():
     for entry in feedEntries:
         articleTitles.append(entry.title)
         articleDates.append(entry.published)
-        articleLinks.append(entry.link)
         articleSummaries.append(entry.summary)
 
-    return articleTitles, articleDates, articleLinks, articleSummaries
+    articleSummaries = stripTags(articleSummaries)
 
-def getLink(link):
-    return f"\u001b]8;;{link}\u001b\\Click to see more\u001b]8;;\u001b\\"
+    return articleTitles, articleDates, articleSummaries
 
-def printArticles(articleTitles, articleDates, articleLinks, articleSummaries):
+def stripTags(articleSummaries):
+    newSummaries = []
+
+    clean = re.compile('<.*?>')
+
+    for summary in articleSummaries:
+        newSummaries.append(re.sub(clean, '', summary))
+    
+    return newSummaries 
+
+def printArticles(articleTitles, articleDates, articleSummaries):
     lastTitle = lastReadArticle()
 
     for i in range(0, 5):
@@ -36,10 +44,9 @@ def printArticles(articleTitles, articleDates, articleLinks, articleSummaries):
             writeLastArticle(articleTitles[0])
             break
 
-        print("\n Article #" + str(i+1) + ":")
+        print("\nArticle #" + str(i+1) + ": \n")
         print(articleTitles[i] + ": " + articleDates[i])
         print(articleSummaries[i])
-        print(getLink(articleLinks[i]))
 
         if i == 4:
             writeLastArticle(articleTitles[0])
