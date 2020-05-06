@@ -1,6 +1,6 @@
 #!/bin/bash
 
-OUTPUT="$(python3 archUpdate.py)"
+OUTPUT="$(python3 arch_update.py)"
 echo "$OUTPUT"
 
 read -p $'\nDo you wish to update? [y/n] ' yn
