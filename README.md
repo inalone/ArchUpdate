@@ -3,7 +3,7 @@ An Arch Linux News update helper that makes your life easier
 
 **Requirements**
 - Python 3
-- feedparser (install with pip)
+- feedparser (install with pip - pip install feedparser) 
 
 **Feature list**
 - [x] Displays the latest news from Arch Linux news

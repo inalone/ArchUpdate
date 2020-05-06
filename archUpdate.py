@@ -3,7 +3,7 @@ import os
 from os import path
 import re
 
-fileName = "/home/" + os.environ.get("USER") + "/.archUpdate"
+fileName = "/home/" + os.environ.get("USER") + "/.cache/arch_update"
 
 def getArticles():
     articleTitles = []
